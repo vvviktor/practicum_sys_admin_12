@@ -1,0 +1,9 @@
+---
+
+- name: Настройка web-серверов MediaWiki
+  hosts: mw_host
+  roles:
+    - mw_host
+  tags:
+    - mw_host
+

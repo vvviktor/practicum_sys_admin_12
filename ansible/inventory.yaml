@@ -1,0 +1,19 @@
+mw_project:
+  children:
+    mw_host:
+      hosts:
+        mw_server_1:
+          ansible_host: 10.11.0.20
+          ansible_user: s14347219
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-02
+    db:
+      hosts:
+        db_vm:
+          ansible_host: 10.12.0.206
+          ansible_user: s14347219
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-03
+  vars:
+    connection_protocol: ssh
+    ansible_become: true
+    ansible_become_method: sudo
+    ansible_become_user: root
