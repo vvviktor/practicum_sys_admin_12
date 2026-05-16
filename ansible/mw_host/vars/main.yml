@@ -12,3 +12,4 @@ packages:
   - php8.1-fpm
   - php-pgsql
 
+mw_site_path: "/var/www/mediawiki"

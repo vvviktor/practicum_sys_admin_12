@@ -20,7 +20,7 @@ server {
         #
         # include snippets/snakeoil.conf;
 
-        root /var/www/mediawiki;
+        root {{ mw_site_path }};
 
         # Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html index.php;

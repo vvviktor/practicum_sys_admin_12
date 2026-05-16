@@ -12,29 +12,29 @@
   loop: "{{ packages }}"
 
 - name: Заменить файл конфигурации nginx
-  ansible.builtin.copy:
-    src: nginx_default
+  ansible.builtin.template:
+    src: nginx_default.j2
     dest: /etc/nginx/sites-enabled/default
+  notify:
+    - Nginx reloader
+    - php8.1-fpm reloader
 
-- name: Создать папку /var/www/mediawiki
+- name: Создать папку "{{ mw_site_path }}"
   ansible.builtin.file:
-    path: /var/www/mediawiki
+    path: "{{ mw_site_path }}"
     state: directory
 
 - name: Распаковать сайт MediaWiki
   ansible.builtin.unarchive:
     src: files/mediawiki-1.42.1.tar.gz
-    dest: /var/www/mediawiki
+    dest: "{{ mw_site_path }}"
     extra_opts: ['--strip-components=1']
 
 - name: Скопировать LocalSettings.php
   ansible.builtin.template:
     src: LocalSettings.j2
-    dest: /var/www/mediawiki/LocalSettings.php
+    dest: "{{ mw_site_path }}/LocalSettings.php"
     owner: www-data
     group: www-data
     mode: '600'
-  notify:
-    - Nginx reloader
-    - php8.1-fpm reloader
 
