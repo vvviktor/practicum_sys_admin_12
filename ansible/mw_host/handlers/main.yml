@@ -1,0 +1,12 @@
+---
+# handlers file for mw_host
+
+- name: Nginx reloader
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
+
+- name: php8.1-fpm reloader
+  ansible.builtin.service:
+    name: php8.1-fpm
+    state: reloaded

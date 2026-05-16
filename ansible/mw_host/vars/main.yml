@@ -1,0 +1,14 @@
+---
+# vars file for mw_host
+
+packages:
+  - nginx
+  - php
+  - php-intl
+  - php-mbstring
+  - php-xml
+  - php-apcu
+  - php-curl
+  - php8.1-fpm
+  - php-pgsql
+

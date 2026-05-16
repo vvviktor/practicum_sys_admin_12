@@ -1,0 +1,39 @@
+---
+# tasks file for mw_host
+
+- name: Выподнить apt update
+  apt:
+    update_cache: yes
+
+- name: Установить пакеты
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+
+- name: Заменить файл конфигурации nginx
+  ansible.builtin.copy:
+    src: nginx_default
+    dest: /etc/nginx/sites-enabled/default
+    notify:
+      - Nginx reloader
+      - php8.1-fpm reloader
+
+- name: Создать папку /var/www/mediawiki
+  ansible.builtin.file:
+    path: /vat/www/mediawiki
+    state: directory
+
+- name: Распаковать сайт MediaWiki
+  ansible.builtin.unarchive:
+    src: files/mediawiki-1.42.1.tar.gz
+    dest: /var/www/mediawiki
+    extra_opts: ['--strip-components=1']
+
+- name: Скопировать LocalSettings.php
+  ansible.builtin.template:
+    src: LocalSettings.j2
+    dest: /var/www/mediawiki
+    owner: www-data
+    group: www-data
+    mode: 600
