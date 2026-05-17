@@ -1,20 +1,12 @@
 ---
 
 - name: Установка Базы данных PostgreSQL
-  become: true
-  become_user: root
+  become: true  
   hosts: db_vm
   roles:
     - db_host
   tags:
     - db_host
-
-- name: Настройка Базы Данных PostgeSQL
-  hosts: db_vm
-  roles:
-    - db_setup
-  tags:
-    - db_setup
 
 - name: Настройка web-серверов MediaWiki
   become: true
@@ -23,4 +15,12 @@
     - mw_host
   tags:
     - mw_host
+
+- name: Помещаем LocalSettings.php на сайт MediaWiki
+  become: true
+  hosts: mw_host
+  roles:
+    - pass_settings
+  tags:
+    - pass_settings
 

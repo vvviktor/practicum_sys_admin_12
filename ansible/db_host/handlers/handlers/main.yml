@@ -5,4 +5,4 @@
   become: true
   ansible.builtin.service:
     name: postgresql
-    state: reloaded
+    state: restarted

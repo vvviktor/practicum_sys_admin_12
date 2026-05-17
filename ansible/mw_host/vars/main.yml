@@ -13,5 +13,3 @@ packages:
   - php-pgsql
   - python3-psycopg2
 
-mw_site_path: '/var/www/mediawiki'
-

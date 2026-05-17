@@ -16,6 +16,7 @@ mw_project:
     connection_protocol: ssh
       #ansible_become: true    
       #ansible_become_user: root
+    mw_site_path: '/var/www/mediawiki'
     db_name: 'my_wiki'
     db_user: 'wikiuser'
     db_password: 'wikipass'

@@ -1,0 +1,11 @@
+---
+# tasks file for pass_settings
+
+- name: Скопировать LocalSettings.php
+  ansible.builtin.template:
+    src: LocalSettings.j2
+    dest: "{{ mw_site_path }}/LocalSettings.php"
+    owner: www-data
+    group: www-data
+    mode: '600'
+
