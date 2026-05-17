@@ -44,3 +44,12 @@
     src: files/mediawiki-1.42.1.tar.gz
     dest: "{{ mw_site_path }}"
     extra_opts: ['--strip-components=1']
+
+- name: Скопировать LocalSettings.php
+  ansible.builtin.template:
+    src: LocalSettings.j2
+    dest: "{{ mw_site_path }}/LocalSettings.php"
+    owner: www-data
+    group: www-data
+    mode: '600'
+

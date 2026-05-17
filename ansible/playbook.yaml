@@ -16,11 +16,3 @@
   tags:
     - mw_host
 
-- name: Помещаем LocalSettings.php на сайт MediaWiki
-  become: true
-  hosts: mw_host
-  roles:
-    - pass_settings
-  tags:
-    - pass_settings
-
