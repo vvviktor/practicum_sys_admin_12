@@ -2,11 +2,11 @@
 # tasks file for mw_host
 
 - name: Выполнить apt update
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
 
 - name: Установить пакеты
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
   loop: "{{ packages }}"
