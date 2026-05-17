@@ -1,0 +1,8 @@
+---
+# handlers file for db_host
+
+- name: Postgresql reloader
+  become: true
+  ansible.builtin.service:
+    name: postgresql
+    state: restarted

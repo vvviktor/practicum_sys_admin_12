@@ -40,10 +40,9 @@
 
 - name: Настроить прослушивание всех IP
   become: true
-  ansible.builtin.lineinfile:
-    path: /etc/postgresql/14/main/postgresql.conf
-    regexp: '^#?listen_addresses\s*='
-    line: "listen_addresses = '*'"
-    state: present
+  become_user: postgres
+  community.postgresql.postgresql_alter_system:
+    param: listen_addresses
+    value: '*'
   notify: Postgresql reloader
 
