@@ -59,9 +59,9 @@ $wgEmailAuthentication = true;
 ## Database settings
 $wgDBtype = 'postgres';
 $wgDBserver = '{{ hostvars['db_vm']['ansible_host'] }}';
-$wgDBname = 'my_wiki';
-$wgDBuser = 'wikiuser';
-$wgDBpassword = 'wikipass';
+$wgDBname = '{{ db_name }}';
+$wgDBuser = '{{ db_user }}';
+$wgDBpassword = '{{ db_password }}';
 
 # Postgres specific settings
 $wgDBport = "5432";

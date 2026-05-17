@@ -11,5 +11,9 @@ packages:
   - php-curl
   - php8.1-fpm
   - php-pgsql
+  - python3-psycopg2
 
 mw_site_path: "/var/www/mediawiki"
+db_name: "my_wiki"
+db_user: "wikiuser"
+db_password: "wikipass"

@@ -19,6 +19,21 @@
     - Nginx reloader
     - php8.1-fpm reloader
 
+- name: Пинг БД
+  community.postgresql.postgresql_ping:
+    login_db: "{{ db_name }}"
+    login_host: "{{ hostvars['db_vm']['ansible_host'] }}"
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_password }}"
+  register: db_ping_result
+
+- name: Результат проверки доступности БД
+  ansible.builtin.assert:
+    that: 
+      - db_ping_result.is_available == true
+    fail_msg: "База данных недоступна"
+    success_msg: "ОК"
+
 - name: Создать папку "{{ mw_site_path }}"
   ansible.builtin.file:
     path: "{{ mw_site_path }}"
