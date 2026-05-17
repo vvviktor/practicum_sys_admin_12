@@ -31,8 +31,8 @@
   ansible.builtin.assert:
     that: 
       - db_ping_result.is_available == true
-    fail_msg: "База данных недоступна"
-    success_msg: "ОК"
+    fail_msg: 'База данных недоступна'
+    success_msg: 'ОК'
 
 - name: Создать папку "{{ mw_site_path }}"
   ansible.builtin.file:
