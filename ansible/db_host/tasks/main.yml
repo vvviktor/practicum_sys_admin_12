@@ -1,0 +1,13 @@
+---
+# tasks file for db_host 
+
+- name: Выполнить apt update
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Установить пакеты
+  ansible.builtin.apt:    
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+
