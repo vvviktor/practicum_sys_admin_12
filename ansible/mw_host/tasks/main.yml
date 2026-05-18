@@ -51,5 +51,5 @@
     dest: "{{ mw_site_path }}/LocalSettings.php"
     owner: www-data
     group: www-data
-    mode: '600'
+    mode: '0600'
 
