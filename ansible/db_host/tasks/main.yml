@@ -19,6 +19,14 @@
     password: "{{ db_password }}"
     role_attr_flags: NOSUPERUSER,NOCREATEDB,NOCREATEROLE
 
+- name: Создать пользователя "{{ replica_user }}"
+  become: true
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    name: "{{ replica_user }}"
+    password: "{{ replica_password }}"
+    role_attr_flags: REPLICATION
+
 - name: Загружаем дамп БД на сервер БД
   ansible.builtin.copy:
     src: files/my_wiki.sql
@@ -50,6 +58,25 @@
     source: "{{ hostvars[item]['ansible_host'] }}/32"
     method: scram-sha-256
   loop: "{{ groups['mw_host'] }}"
+  notify: Postgresql reloader
+
+- name: Настроить доступ для репликации
+  community.postgresql.postgresql_pg_hba:
+    dest: /etc/postgresql/14/main/pg_hba.conf
+    contype: host
+    databases: 'replication'
+    users: "{{ replica_user }}"
+    source: "{{ hostvars[item]['ansible_host'] }}/32"
+    method: scram-sha-256
+  loop: "{{ groups['db_replica'] }}"
+  notify: Postgresql reloader
+
+- name: Установить wal_level = replica
+  become: true
+  become_user: postgres
+  community.postgresql.postgresql_alter_system:
+    param: wal_level
+    value: 'replica'
   notify: Postgresql reloader
 
 - name: Настроить прослушивание всех IP

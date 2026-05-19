@@ -1,0 +1,41 @@
+---
+# tasks file for db_replica
+
+- name: Выполнить apt update
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Установить пакеты
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+
+- name: Установить hot_standby = on
+  become: true
+  become_user: postgres
+  community.postgresql.postgresql_alter_system:
+    param: hot_standby
+    value: 'on'
+  notify: Postgresql reloader
+
+- name: Остановить postgresql
+  ansible.builtin.service:
+    name: postgresql
+    state: stopped
+
+- name: Удалить текущие базы
+  ansible.builtin.file:
+    path: /var/lib/postgresql/14/main/
+    state: absent
+
+- name: Выполнить восстановление базы с главного сервера БД
+  command: >
+    pg_basebackup
+    -h {{ hostvars['db_vm']['ansible_host'] }}
+    -D /var/lib/postgresql/14/main
+    -U {{ replication_user }}
+    -P
+    -v
+    -R
+  notify: Postgresql reloader

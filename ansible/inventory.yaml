@@ -11,7 +11,13 @@ mw_project:
         db_vm:
           ansible_host: 10.12.0.241
           ansible_user: s14347219
-          ansible_ssh_private_key_file: ./ssh_keys/s14347219-03          
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-03
+    db_replica:
+      hosts:
+        db_rep:
+          ansible_host: 10.11.0.92
+          ansible_user: s14347219
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-02      
   vars:   
     connection_protocol: ssh
       #ansible_become: true    
@@ -20,4 +26,7 @@ mw_project:
     db_name: 'my_wiki'
     db_user: 'wikiuser'
     db_password: 'wikipass'
+    replica_name: 'my_wiki_replica'
+    replica_user: 'wiki_replica'
+    replica_password: 'wikireppass'
 
