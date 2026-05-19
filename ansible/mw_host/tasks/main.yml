@@ -15,9 +15,16 @@
   ansible.builtin.template:
     src: nginx_default.j2
     dest: /etc/nginx/sites-enabled/default
-  notify:
-    - Nginx reloader
-    - php8.1-fpm reloader
+
+- name: Перезапустить php8.1-fpm
+  ansible.builtin.service:
+    name: php8.1-fpm
+    state: restarted
+
+- name: Перезапустить nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
 
 - name: Пинг БД
   community.postgresql.postgresql_ping:
