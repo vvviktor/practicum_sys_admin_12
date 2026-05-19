@@ -34,7 +34,7 @@
     pg_basebackup
     -h {{ hostvars['db_vm']['ansible_host'] }}
     -D /var/lib/postgresql/14/main
-    -U {{ replication_user }}
+    -U {{ replica_user }}
     -P
     -v
     -R
