@@ -11,6 +11,12 @@
     state: present
   loop: "{{ packages }}"
 
+- name: Запустить postgresql
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: yes
+
 - name: Установить hot_standby = on
   become: true
   become_user: postgres
@@ -25,11 +31,15 @@
     state: stopped
 
 - name: Удалить текущие базы
+  become: true
+  become_user: postgres
   ansible.builtin.file:
     path: /var/lib/postgresql/14/main/
     state: absent
 
 - name: Выполнить восстановление базы с главного сервера БД
+  become: true
+  become_user: postgres
   command: >
     pg_basebackup
     -h {{ hostvars['db_vm']['ansible_host'] }}
@@ -38,4 +48,8 @@
     -P
     -v
     -R
+  environment:
+    PGPASSWORD: "{{ replica_password }}"
   notify: Postgresql reloader
+  tags:
+    - restore_bases_for_replica

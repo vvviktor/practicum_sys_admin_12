@@ -15,7 +15,7 @@ mw_project:
     db_replica:
       hosts:
         db_rep:
-          ansible_host: 10.11.0.92
+          ansible_host: 10.11.0.103
           ansible_user: s14347219
           ansible_ssh_private_key_file: ./ssh_keys/s14347219-02      
   vars:   
