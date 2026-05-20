@@ -12,4 +12,5 @@ packages:
   - php8.1-fpm
   - php-pgsql
   - python3-psycopg2
+  - nfs-common
 

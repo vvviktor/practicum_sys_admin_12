@@ -1,0 +1,36 @@
+---
+# tasks file for image_host
+
+- name: Выполнить apt update
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Установить пакеты
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+
+- name: Создать NFS шару
+  ansible.builtin.file:
+    path: "{{ image_folder_path }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Дополнить /etc/exports
+  ansible.builtin.lineinfile:
+    path: /etc/exports
+    line: "{{ image_folder_path }} {{ hostvars[item]['ansible_host'] }}(rw,sync,no_subtree_check)"
+    state: present
+  loop: "{{ groups['mw_host'] }}"
+
+- name: Применить изменения /etc/exports
+  ansible.builtin.command: exportfs -a
+
+- name: Перезапустить NFS-сервер
+  ansible.builtin.service:
+    name: nfs-kernel-server
+    state: restarted
+    enabled: yes

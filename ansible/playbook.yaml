@@ -16,6 +16,14 @@
   tags:
     - db_replica
 
+- name: Настройка NFS-сервера изображений
+  become: true
+  hosts: image_host
+  roles:
+    - image_host
+  tags:
+    - image_host
+
 - name: Настройка web-серверов MediaWiki
   become: true
   hosts: mw_host

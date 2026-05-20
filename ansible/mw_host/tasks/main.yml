@@ -52,6 +52,20 @@
     dest: "{{ mw_site_path }}"
     extra_opts: ['--strip-components=1']
 
+- name: Создать папку "{{ image_folder_path }}"
+  ansible.builtin.file:
+    path: "{{ image_folder_path }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Смонтировать удаленную шару
+  ansible.builtin.command: > 
+    mount -t nfs  
+      {{ hostvars['image_server']['ansible_host'] }}:{{ image_folder_path }}
+      {{ image_folder_path }}
+
 - name: Скопировать LocalSettings.php
   ansible.builtin.template:
     src: LocalSettings.j2
@@ -59,4 +73,5 @@
     owner: www-data
     group: www-data
     mode: '0600'
+
 

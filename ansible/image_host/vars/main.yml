@@ -1,0 +1,6 @@
+---
+# vars file for image_host
+
+packages:
+  - nfs-kernel-server
+  - nfs-common
