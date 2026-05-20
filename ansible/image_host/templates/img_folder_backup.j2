@@ -1,0 +1,13 @@
+#!/bin/bash
+
+src_folder="{{ image_folder_path }}"
+dest_folder="{{ image_backup_folder_path }}"
+archive_name="mw_img_backup_$(date +'%y-%m-%d_%H_%M_%S').tar.gz"
+max_files={{ number_of_files_to_store }}
+
+tar -czf "$dest_folder/$archive_name" -C "$src_folder" .
+
+if [ $(ls -1 "$dest_folder"/*.tar.gz 2>/dev/null | wc -l) -gt $max_files ]; then
+	ls -t "$dest_folder"/*.tar.gz | tail -n +$((max_files + 1)) | xargs -r rm -f
+fi
+

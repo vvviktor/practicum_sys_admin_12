@@ -26,7 +26,7 @@
 - name: Дополнить /etc/exports
   ansible.builtin.lineinfile:
     path: /etc/exports
-    line: "{{ image_backup_folder_path }} {{ hostvars['image_server']['ansible_host'] }}(rw,sync,no_subtree_check)"
+    line: "{{ image_backup_folder_path }} {{ hostvars['image_server']['ansible_host'] }}(rw,sync,no_subtree_check,no_root_squash)"
     state: present
 
 - name: Дополнить /etc/exports

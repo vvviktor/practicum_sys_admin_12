@@ -1,0 +1,11 @@
+[Unit]
+
+Description=MediaWiki image folder backup service timer
+
+[Timer]
+
+OnCalendar={{ backup_timer_setting }}
+
+[Install]
+
+WantedBy=timers.target

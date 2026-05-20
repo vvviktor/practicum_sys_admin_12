@@ -4,3 +4,11 @@
 packages:
   - nfs-kernel-server
   - nfs-common
+
+backup_service_name_prefix: 'mw_img_backup'
+backup_script_name_prefix: 'img_folder_backup'
+backup_user: 'root'
+backup_group: 'root'
+backup_timer_setting: '*:0..59/2:00'
+number_of_files_to_store: '10'
+

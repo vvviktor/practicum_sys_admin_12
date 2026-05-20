@@ -1,0 +1,12 @@
+[Unit]
+Description=MediaWiki image folder backup service
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart={{ backup_scripts_folder_path }}/{{ backup_script_name_prefix }}.sh
+User={{ backup_user }}
+Group={{ backup_group }}
+
+[Install]
+WantedBy=multi-user.target

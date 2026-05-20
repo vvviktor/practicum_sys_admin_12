@@ -60,3 +60,36 @@
       {{ image_backup_folder_path }}
   tags:
     - mount_shared
+
+- name: Создать файл backup-скрипта
+  ansible.builtin.template:
+    src: "templates/{{ backup_script_name_prefix }}.j2"
+    dest: "{{ backup_scripts_folder_path }}/{{ backup_script_name_prefix }}.sh"
+    mode: '755'
+
+- name: Создать файл systemd-сервиса
+  ansible.builtin.template:
+    src: "templates/{{ backup_service_name_prefix }}.service.j2"
+    dest: "/etc/systemd/system/{{ backup_service_name_prefix }}.service"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Создать файл systemd-таймера
+  ansible.builtin.template:
+    src: "templates/{{ backup_service_name_prefix }}.timer.j2"
+    dest: "/etc/systemd/system/{{ backup_service_name_prefix }}.timer"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Перезапустить systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Запустить backup-таймер
+  ansible.builtin.service:
+    name: "{{ backup_service_name_prefix }}.timer"
+    state: started
+    enabled: true
+   
