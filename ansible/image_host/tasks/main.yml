@@ -11,7 +11,7 @@
     state: present
   loop: "{{ packages }}"
 
-- name: Создать NFS шару
+- name: Создать NFS папку "{{ image_folder_path }}"
   ansible.builtin.file:
     path: "{{ image_folder_path }}"
     state: directory

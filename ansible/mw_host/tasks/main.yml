@@ -60,7 +60,7 @@
     group: www-data
     mode: '0755'
 
-- name: Смонтировать удаленную шару
+- name: Смонтировать удаленную "{{ image_folder_path }}"
   ansible.builtin.command: > 
     mount -t nfs  
       {{ hostvars['image_server']['ansible_host'] }}:{{ image_folder_path }}

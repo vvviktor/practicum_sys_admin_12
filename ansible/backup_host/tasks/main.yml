@@ -11,13 +11,13 @@
     state: present
   loop: "{{ packages }}"
 
-- name: Создать NFS шару для "{{ image_backup_folder_path }}"
+- name: Создать NFS папку "{{ image_backup_folder_path }}"
   ansible.builtin.file:
     path: "{{ image_backup_folder_path }}"
     state: directory    
     mode: '0777'
 
-- name: Создать NFS шару для "{{ db_backup_folder_path }}"
+- name: Создать NFS папку "{{ db_backup_folder_path }}"
   ansible.builtin.file:
     path: "{{ db_backup_folder_path }}"
     state: directory    
