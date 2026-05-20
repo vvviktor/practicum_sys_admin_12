@@ -65,7 +65,7 @@
   ansible.builtin.template:
     src: "templates/{{ backup_script_name_prefix }}.j2"
     dest: "{{ backup_scripts_folder_path }}/{{ backup_script_name_prefix }}.sh"
-    mode: '755'
+    mode: '0755'
 
 - name: Создать файл systemd-сервиса
   ansible.builtin.template:
