@@ -5,3 +5,4 @@ packages:
   - postgresql-14
   - python3-psycopg2
   - acl
+  - nfs-common
