@@ -1,5 +1,13 @@
 ---
 
+- name: Настройка backup-сервера
+  become: true
+  hosts: backup_host
+  roles:
+    - backup_host
+  tags:
+    - backup_host
+
 - name: Установка Базы данных PostgreSQL
   become: true  
   hosts: db_vm

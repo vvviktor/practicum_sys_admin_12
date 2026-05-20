@@ -24,12 +24,21 @@ mw_project:
           ansible_host: 10.12.1.39
           ansible_user: s14347219
           ansible_ssh_private_key_file: ./ssh_keys/s14347219-03
+    backup_host:
+      hosts:
+        backup_server:
+          ansible_host: 10.11.0.108
+          ansible_user: s14347219
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-02
   vars:   
     connection_protocol: ssh
       #ansible_become: true    
       #ansible_become_user: root
     mw_site_path: '/var/www/mediawiki'
     image_folder_path: '/mediawiki_images'
+    db_backup_folder_path: '/db_backup'
+    image_backup_folder_path: '/mediawiki_images_backup'
+    backup_scripts_folder_path: '/scripts'
     db_name: 'my_wiki'
     db_user: 'wikiuser'
     db_password: 'wikipass'
