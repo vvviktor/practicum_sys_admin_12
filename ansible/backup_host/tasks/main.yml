@@ -1,2 +1,45 @@
 ---
 # tasks file for backup_host
+
+- name: Выполнить apt update
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Установить пакеты
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+
+- name: Создать NFS шару для "{{ image_backup_folder_path }}"
+  ansible.builtin.file:
+    path: "{{ image_backup_folder_path }}"
+    state: directory    
+    mode: '0777'
+
+- name: Создать NFS шару для "{{ db_backup_folder_path }}"
+  ansible.builtin.file:
+    path: "{{ db_backup_folder_path }}"
+    state: directory    
+    mode: '0777'
+
+- name: Дополнить /etc/exports
+  ansible.builtin.lineinfile:
+    path: /etc/exports
+    line: "{{ image_backup_folder_path }} {{ hostvars['image_server']['ansible_host'] }}(rw,sync,no_subtree_check)"
+    state: present
+
+- name: Дополнить /etc/exports
+  ansible.builtin.lineinfile:
+    path: /etc/exports
+    line: "{{ db_backup_folder_path }} {{ hostvars['db_vm']['ansible_host'] }}(rw,sync,no_subtree_check)"
+    state: present
+
+- name: Применить изменения /etc/exports
+  ansible.builtin.command: exportfs -a
+
+- name: Перезапустить NFS-сервер
+  ansible.builtin.service:
+    name: nfs-kernel-server
+    state: restarted
+    enabled: yes

@@ -39,6 +39,7 @@ mw_project:
     db_backup_folder_path: '/db_backup'
     image_backup_folder_path: '/mediawiki_images_backup'
     backup_scripts_folder_path: '/scripts'
+    temp_folder_path: '/backup_temp'
     db_name: 'my_wiki'
     db_user: 'wikiuser'
     db_password: 'wikipass'

@@ -1,2 +1,7 @@
 ---
 # vars file for backup_host
+
+packages:
+  - nfs-kernel-server
+  - nfs-common
+
