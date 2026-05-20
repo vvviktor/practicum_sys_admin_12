@@ -66,6 +66,14 @@
       {{ hostvars['image_server']['ansible_host'] }}:{{ image_folder_path }}
       {{ image_folder_path }}
 
+- name: Создать симлинк в "{{ mw_site_path }}" для  "{{ image_folder_path }}"
+  ansible.builtin.file:
+    src: "{{ image_folder_path }}"
+    path: "{{ mw_site_path }}{{ image_folder_path }}"
+    state: link
+    owner: www-data
+    group: www-data
+
 - name: Скопировать LocalSettings.php
   ansible.builtin.template:
     src: LocalSettings.j2
