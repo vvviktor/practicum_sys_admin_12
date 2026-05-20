@@ -87,3 +87,28 @@
     value: '*'
   notify: Postgresql reloader
 
+- name: Создать "{{ db_backup_folder_path }}"
+  ansible.builtin.file:
+    path: "{{ db_backup_folder_path }}"
+    state: directory
+    mode: '0777'
+
+- name: Создать "{{ backup_scripts_folder_path }}"
+  ansible.builtin.file:
+    path: "{{ backup_scripts_folder_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Создать "{{ temp_folder_path }}"
+  ansible.builtin.file:
+    path: "{{ temp_folder_path }}"
+    state: directory
+    mode: '0777'
+
+- name: Смонтировать удаленную "{{ db_backup_folder_path }}"
+  ansible.builtin.command: > 
+    mount -t nfs  
+      {{ hostvars['backup_server']['ansible_host'] }}:{{ db_backup_folder_path }}
+      {{ db_backup_folder_path }}
+  tags:
+    - mount_shared
