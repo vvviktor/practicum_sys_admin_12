@@ -65,6 +65,8 @@
     mount -t nfs  
       {{ hostvars['image_server']['ansible_host'] }}:{{ image_folder_path }}
       {{ image_folder_path }}
+  tags:
+    - mount_shared
 
 - name: Создать симлинк в "{{ mw_site_path }}" для  "{{ image_folder_path }}"
   ansible.builtin.file:
