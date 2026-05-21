@@ -9,7 +9,7 @@
         that:
           - backup_name is defined
         success_msg: "Восстанавливаем папку {{ image_folder_path }} из архива {{ backup_name }}"
-        fail_msg: "Необходимый параметр backup_name не передан!"
+        fail_msg: "Необходимый параметр -e backup_name=<имя архива> не передан!"
 
     - name: Восстанавливаем "{{ image_folder_path }}"
       ansible.builtin.file:
