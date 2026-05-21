@@ -30,7 +30,7 @@
         src: "{{ image_backup_folder_path }}/{{ backup_name }}"
         dest: "{{ image_folder_path }}"
 
-- name: Восстановить монтирование "{{ image_folder_path }}" на всех клиентах
+- name: Восстановить монтирование на всех клиентах
   hosts: mw_host
   become: true
   tasks:
