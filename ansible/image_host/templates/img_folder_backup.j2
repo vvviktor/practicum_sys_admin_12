@@ -5,9 +5,24 @@ dest_folder="{{ image_backup_folder_path }}"
 archive_name="mw_img_backup_$(date +'%y-%m-%d_%H_%M_%S').tar.gz"
 max_files={{ number_of_files_to_store }}
 
+if [ ! -d "$src_folder" ]; then
+        printf "Folder '%s' doesn't exist!" "$src_folder" >&2
+        exit 1
+fi
+
+if [ ! -d "$dest_folder" ]; then
+        printf "Folder '%s' doesn't exist!" "$dest_folder" >&2
+        exit 1
+fi
+
+if [ ! -r "$src_folder" ] || [ ! -w "$dest_folder" ]; then
+        echo "Permission denied!" >&2
+        exit 1
+fi
+
 tar -czf "$dest_folder/$archive_name" -C "$src_folder" .
 
 if [ $(ls -1 "$dest_folder"/*.tar.gz 2>/dev/null | wc -l) -gt $max_files ]; then
-	ls -t "$dest_folder"/*.tar.gz | tail -n +$((max_files + 1)) | xargs -r rm -f
+        ls -t "$dest_folder"/*.tar.gz | tail -n +$((max_files + 1)) | xargs -r rm -f
 fi
 
