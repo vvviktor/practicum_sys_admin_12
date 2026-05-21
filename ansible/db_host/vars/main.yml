@@ -6,3 +6,10 @@ packages:
   - python3-psycopg2
   - acl
   - nfs-common
+
+backup_service_name_prefix: 'db_dump_backup'
+backup_script_name_prefix: 'db_dump_backup'
+backup_user: 'postgres'
+backup_group: 'postgres'
+backup_timer_setting: '*:0..59/2:00'
+number_of_files_to_store: '10'

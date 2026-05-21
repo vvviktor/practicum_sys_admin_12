@@ -1,0 +1,29 @@
+#!/bin/bash
+
+dest_folder="{{ db_backup_folder_path }}"
+archive_name="db_dump_backup_$(date +'%y-%m-%d_%H_%M_%S').tar"
+max_files={{ number_of_files_to_store }}
+
+if [ ! -d "$dest_folder" ]; then
+        printf "Folder '%s' doesn't exist!" "$dest_folder" >&2
+        exit 1
+fi
+
+if [ ! -w "$dest_folder" ]; then
+        echo "Permission denied!" >&2
+        exit 1
+fi
+
+base_exists=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='{{ db_name }}'" 2>/dev/null)
+
+if [ "$base_exists" != 1 ]; then
+	echo "Database {{ db_name }} doesn't exist!" >&2
+	exit 1
+fi
+
+pg_dump -U postgres -F t -f "$dest_folder/$archive_name" {{ db_name }}
+
+if [ $(ls -1 "$dest_folder"/*.tar 2>/dev/null | wc -l) -gt $max_files ]; then
+        ls -t "$dest_folder"/*.tar | tail -n +$((max_files + 1)) | xargs -r rm -f
+fi
+

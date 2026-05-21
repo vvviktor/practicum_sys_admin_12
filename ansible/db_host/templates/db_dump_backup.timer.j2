@@ -1,0 +1,11 @@
+[Unit]
+
+Description=MediaWiki database dump backup service timer
+
+[Timer]
+
+OnCalendar={{ backup_timer_setting }}
+
+[Install]
+
+WantedBy=timers.target
