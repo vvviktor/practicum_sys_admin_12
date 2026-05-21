@@ -1,0 +1,47 @@
+---
+
+- name: Восстановление папки с загруженными файлами MediaWiki
+  hosts: image_host
+  become: true
+  tasks:
+    - name: Проверка аргумента
+      ansible.builtin.assert:
+        that:
+          - backup_name is defined
+        success_msg: "Восстанавливаем папку {{ image_folder_path }} из архива {{ backup_name }}"
+        fail_msg: "Необходимый параметр backup_name не передан!"
+
+    - name: Восстанавливаем "{{ image_folder_path }}"
+      ansible.builtin.file:
+        path: "{{ image_folder_path }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Перезапустить NFS-сервер
+      ansible.builtin.service:
+        name: nfs-kernel-server
+        state: restarted
+
+    - name: Распаковать "{{ backup_name }}"
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: "{{ image_backup_folder_path }}/{{ backup_name }}"
+        dest: "{{ image_folder_path }}"
+
+- name: Восстановить монтирование "{{ image_folder_path }}" на всех клиентах
+  hosts: mw_host
+  become: true
+  tasks:
+    - name: Отмонтировать stale NFS share
+      ansible.builtin.command: umount -l {{ image_folder_path }}
+      ignore_errors: yes
+
+    - name: Смонтировать "{{ image_folder_path }} "
+      ansible.builtin.command: > 
+        mount -t nfs  
+         {{ hostvars['image_server']['ansible_host'] }}:{{ image_folder_path }}
+         {{ image_folder_path }}       
+
+

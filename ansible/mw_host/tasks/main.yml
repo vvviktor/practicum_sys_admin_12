@@ -11,6 +11,12 @@
     state: present
   loop: "{{ packages }}"
 
+- name: Если apache2 запущен, остановить
+  ansible.builtin.service:
+    name: apache2
+    state: stopped
+    enabled: false
+
 - name: Заменить файл конфигурации nginx
   ansible.builtin.template:
     src: nginx_default.j2
@@ -20,11 +26,13 @@
   ansible.builtin.service:
     name: php8.1-fpm
     state: restarted
+    enabled: true
 
 - name: Перезапустить nginx
   ansible.builtin.service:
     name: nginx
     state: restarted
+    enabled: true
 
 - name: Пинг БД
   community.postgresql.postgresql_ping:
