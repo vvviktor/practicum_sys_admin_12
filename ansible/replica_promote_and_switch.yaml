@@ -1,0 +1,21 @@
+---
+
+- name: Перевести реплику БД в режим primary
+  hosts: db_replica
+  tasks:
+    - name: Выполнить команду pg_promote
+      become: true
+      become_user: postgres
+      ansible.builtin.command: pg_ctlcluster 14 main promote
+
+- name: Обновить LocalSettings.php на серверах
+  hosts: mw_host
+  become: true
+  tasks:
+    - name: Заменить строку с адресом БД
+      ansible.builtin.lineinfile:
+        path: /var/www/mediawiki/LocalSettings.php
+        regexp: '^\$wgDBserver = .*;'
+        line: "$wgDBserver = '{{ hostvars['db_rep']['ansible_host'] }}';"
+  tags:
+    - change_LS
