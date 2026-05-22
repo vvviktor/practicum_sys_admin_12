@@ -1,0 +1,17 @@
+upstream mw_servers {
+{% for host_name in groups['mw'] %}
+        server {{ hostvars[host_name]['ansible_host'] }}:80 weight=1;
+{% endfor %}
+}
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	location / {
+		proxy_pass http://mw_servers;
+
+		proxy_next_upstream error;
+	}
+}
+
