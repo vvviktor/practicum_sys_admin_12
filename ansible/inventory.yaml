@@ -1,10 +1,10 @@
 mw_project:
   children:
-    nginx_proxy:
+    nginxproxy:
       hosts:
-        nginx_proxy_server:
+        nginxproxy_server:
           ansible_host: 93.77.185.198
-          ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_nginx_proxy_server
+          ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_nginxproxy_server
     mw:
       hosts:
         mw_server_1:
@@ -16,13 +16,13 @@ mw_project:
     db:
       hosts:
         db_server:
-          ansible_host: 89.169.159.197
-          ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_db_replica_server
-    db_replica:
+          ansible_host: 93.77.177.116
+          ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_db_image_server
+    dbreplica:
       hosts:
-        db_replica_server:
-          ansible_host: 89.169.159.197
-          ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_db_replica_server
+        dbreplica_server:
+          ansible_host: 93.77.183.22
+          ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_dbreplica_server
     image:
       hosts:
         image_server:

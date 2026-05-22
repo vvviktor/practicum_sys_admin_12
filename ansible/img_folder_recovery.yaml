@@ -1,7 +1,7 @@
 ---
 
 - name: Восстановление папки с загруженными файлами MediaWiki
-  hosts: image_host
+  hosts: image
   become: true
   tasks:
     - name: Проверка аргумента

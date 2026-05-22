@@ -1,7 +1,7 @@
 ---
 
 - name: Загрузка начального состояния БД
-  hosts: db_host
+  hosts: db
   become: true
   tasks:
     - name: Загрузить дамп БД на сервер БД
@@ -17,4 +17,4 @@
         owner: "{{ db_user }}"
         state: restore
         target: /tmp/my_wiki.sql
-        target_opts: "--clean --if-exists"
+

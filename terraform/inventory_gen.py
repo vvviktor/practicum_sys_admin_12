@@ -21,7 +21,7 @@ def generate_inventory_dict(host_ip_dict, host_key_dict):
     inventory = {
         'mw_project': {
             'children': {
-                'nginx_proxy': {
+                'nginxproxy': {
                     'hosts': {}
                 },
                 'mw': {
@@ -30,7 +30,7 @@ def generate_inventory_dict(host_ip_dict, host_key_dict):
                 'db': {
                     'hosts': {}
                 },
-                'db_replica': {
+                'dbreplica': {
                     'hosts': {}
                 },
                 'image': {
@@ -51,10 +51,11 @@ def generate_inventory_dict(host_ip_dict, host_key_dict):
     
     for group, hosts in inventory['mw_project']['children'].items():
         for host, ip in host_ip_dict.items():
-            group_match = re.search(f'{group}', host)
+            pattern = re.escape(group) + r'_'
+            group_match = re.search(pattern, host)
             if not group_match:
                 continue
-            host_name = group_match.group() + "_server"
+            host_name = group_match.group() + "server"
             if host_name == "mw_server":
                 host_name += '_' + str(mw_server_cnt)
                 mw_server_cnt += 1

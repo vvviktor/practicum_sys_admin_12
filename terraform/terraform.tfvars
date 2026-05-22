@@ -30,12 +30,12 @@ virtual_machines = {
      default_user = "ubuntu"
    }
    "vm-4" = {
-     vm_name      = "db_replica_server" # Имя ВМ
+     vm_name      = "dbreplica_server" # Имя ВМ
      vm_desc      = "Реплика БД"
      vm_cpu       = 2 # Кол-во ядер процессора
      ram          = 2 # Оперативная память в ГБ
      disk         = 20 # Объём диска в ГБ
-     disk_name    = "db_replica_server-disk" # Название диска
+     disk_name    = "dbreplica_server-disk" # Название диска
      template     = "fd82sqrj4uk9j7vlki3q" # ID образа ОС для использования
      default_user = "ubuntu"
    }
@@ -50,12 +50,12 @@ virtual_machines = {
      default_user = "ubuntu"
    }
    "vm-6" = {
-     vm_name      = "nginx_proxy_server" # Имя ВМ
+     vm_name      = "nginxproxy_server" # Имя ВМ
      vm_desc      = "Nginx прокси для веб-серверов MediaWiki"
      vm_cpu       = 2 # Кол-во ядер процессора
      ram          = 2 # Оперативная память в ГБ
      disk         = 20 # Объём диска в ГБ
-     disk_name    = "nginx_proxy_server-disk" # Название диска
+     disk_name    = "nginxproxy_server-disk" # Название диска
      template     = "fd82sqrj4uk9j7vlki3q" # ID образа ОС для использования
      default_user = "ubuntu"
    }

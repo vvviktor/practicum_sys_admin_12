@@ -54,7 +54,7 @@
     users: "{{ replica_user }}"
     source: "{{ hostvars[item]['ansible_host'] }}/32"
     method: scram-sha-256
-  loop: "{{ groups['db_replica'] }}"
+  loop: "{{ groups['dbreplica'] }}"
   notify: Postgresql reloader
 
 - name: Установить wal_level = replica

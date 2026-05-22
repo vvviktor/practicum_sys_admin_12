@@ -18,11 +18,11 @@
 
 - name: Настройка сервера репликации PostgreSQL
   become: true
-  hosts: db_replica
+  hosts: dbreplica
   roles:
-    - db_replica
+    - dbreplica
   tags:
-    - db_replica
+    - dbreplica
 
 - name: Настройка NFS-сервера изображений
   become: true

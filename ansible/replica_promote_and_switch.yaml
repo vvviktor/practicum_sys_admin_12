@@ -1,7 +1,7 @@
 ---
 
 - name: Перевести реплику БД в режим primary
-  hosts: db_replica
+  hosts: db-replica
   tasks:
     - name: Выполнить команду pg_promote
       become: true
@@ -9,14 +9,14 @@
       ansible.builtin.command: pg_ctlcluster 14 main promote
 
 - name: Обновить LocalSettings.php на серверах
-  hosts: mw_host
+  hosts: mw
   become: true
   tasks:
     - name: Заменить строку с адресом БД
       ansible.builtin.lineinfile:
         path: /var/www/mediawiki/LocalSettings.php
         regexp: '^\$wgDBserver = .*;'
-        line: "$wgDBserver = '{{ hostvars['db_rep']['ansible_host'] }}';"
+        line: "$wgDBserver = '{{ hostvars['dbreplica_server']['ansible_host'] }}';"
 
     - name: Перезапустить php8.1-fpm
       ansible.builtin.service:
