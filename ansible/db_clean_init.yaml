@@ -1,0 +1,20 @@
+---
+
+- name: Загрузка начального состояния БД
+  hosts: db_host
+  become: true
+  tasks:
+    - name: Загрузить дамп БД на сервер БД
+      ansible.builtin.copy:
+        src: ./my_wiki.sql
+        dest: /tmp/my_wiki.sql  
+
+    - name: Заполнить базу "{{ db_name }}"
+      become: true
+      become_user: postgres
+      community.postgresql.postgresql_db:
+        name: "{{ db_name }}"
+        owner: "{{ db_user }}"
+        state: restore
+        target: /tmp/my_wiki.sql
+        target_opts: "--clean --if-exists"

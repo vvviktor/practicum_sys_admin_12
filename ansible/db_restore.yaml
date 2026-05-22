@@ -1,0 +1,23 @@
+---
+
+- name: Восстановление БД MediaWiki из дампа
+  hosts: db
+  become: true
+  tasks:
+    - name: Проверка аргумента
+      ansible.builtin.assert:
+        that:
+          - backup_name is defined
+        success_msg: "Восстанавливаем БД {{ db_name }} из архива {{ backup_name }}"
+        fail_msg: "Необходимый параметр -e backup_name=<имя архива> не передан!"
+
+    - name: Восстановление состояния из архива "{{ backup_name }}"
+      become: true
+      become_user: postgres
+      community.postgresql.postgresql_db:
+        name: "{{ db_name }}"
+        owner: "{{ db_user }}"
+        state: restore
+        target: "{{ db_backup_folder_path }}/{{ backup_name }}"
+        target_opts: "--clean --if-exists"
+

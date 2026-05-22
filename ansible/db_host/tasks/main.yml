@@ -27,11 +27,6 @@
     password: "{{ replica_password }}"
     role_attr_flags: REPLICATION
 
-- name: Загружаем дамп БД на сервер БД
-  ansible.builtin.copy:
-    src: files/my_wiki.sql
-    dest: /tmp/my_wiki.sql
-
 - name: Создать базу "{{ db_name }}"
   become: true
   become_user: postgres
@@ -39,17 +34,6 @@
     name: "{{ db_name }}"
     owner: "{{ db_user }}"
     state: present 
-
-- name: Заполнить базу "{{ db_name }}"
-  become: true
-  become_user: postgres
-  community.postgresql.postgresql_db:
-    name: "{{ db_name }}"
-    owner: "{{ db_user }}"
-    state: restore
-    target: /tmp/my_wiki.sql
-  tags:
-    - base_init
 
 - name: Настроить доступ для хостов MediaWiki
   community.postgresql.postgresql_pg_hba:

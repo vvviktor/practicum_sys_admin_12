@@ -17,5 +17,10 @@
         path: /var/www/mediawiki/LocalSettings.php
         regexp: '^\$wgDBserver = .*;'
         line: "$wgDBserver = '{{ hostvars['db_rep']['ansible_host'] }}';"
+
+    - name: Перезапустить php8.1-fpm
+      ansible.builtin.service:
+        name: php8.1-fpm
+        state: restarted
   tags:
     - change_LS
