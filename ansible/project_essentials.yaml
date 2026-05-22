@@ -2,19 +2,19 @@
 
 - name: Настройка backup-сервера
   become: true
-  hosts: backup_host
+  hosts: backup
   roles:
-    - backup_host
+    - backup
   tags:
-    - backup_host
+    - backup
 
 - name: Установка Базы данных PostgreSQL
   become: true  
-  hosts: db_vm
+  hosts: db
   roles:
-    - db_host
+    - db
   tags:
-    - db_host
+    - db
 
 - name: Настройка сервера репликации PostgreSQL
   become: true
@@ -26,17 +26,17 @@
 
 - name: Настройка NFS-сервера изображений
   become: true
-  hosts: image_host
+  hosts: image
   roles:
-    - image_host
+    - image
   tags:
-    - image_host
+    - image
 
 - name: Настройка web-серверов MediaWiki
   become: true
-  hosts: mw_host
+  hosts: mw
   roles:
-    - mw_host
+    - mw
   tags:
-    - mw_host
+    - mw
 

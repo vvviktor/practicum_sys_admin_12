@@ -1,0 +1,43 @@
+mw_project:
+  children:
+    mw:
+      hosts:
+        mw_server_1:
+          ansible_host: 10.11.1.101          
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-02
+    db:
+      hosts:
+        db_server:
+          ansible_host: 10.12.0.14
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-03
+    db_replica:
+      hosts:
+        db_replica_server:
+          ansible_host: 10.11.1.101
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-02
+    image:
+      hosts:
+        image_server:
+          ansible_host: 10.12.0.14
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-03
+    backup:
+      hosts:
+        backup_server:
+          ansible_host: 10.11.1.101
+          ansible_ssh_private_key_file: ./ssh_keys/s14347219-02
+  vars:   
+    connection_protocol: ssh
+    ansible_user: s14347219
+    mw_site_path: '/var/www/mediawiki'
+    image_folder_path: '/mediawiki_images'
+    db_backup_folder_path: '/db_backup'
+    image_backup_folder_path: '/mediawiki_images_backup'
+    backup_scripts_folder_path: '/scripts'
+    temp_folder_path: '/backup_temp'
+    db_name: 'my_wiki'
+    db_user: 'wikiuser'
+    db_password: 'wikipass'
+    replica_name: 'my_wiki_replica'
+    replica_user: 'wiki_replica'
+    replica_password: 'wikireppass'
+

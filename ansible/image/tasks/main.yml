@@ -24,7 +24,7 @@
     path: /etc/exports
     line: "{{ image_folder_path }} {{ hostvars[item]['ansible_host'] }}(rw,sync,no_subtree_check)"
     state: present
-  loop: "{{ groups['mw_host'] }}"
+  loop: "{{ groups['mw'] }}"
 
 - name: Применить изменения /etc/exports
   ansible.builtin.command: exportfs -a

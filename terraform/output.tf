@@ -1,0 +1,7 @@
+output "vm_nat_ip" {
+  value = { for k, v in  yandex_compute_instance.virtual_machine : v.name => v.network_interface.0.nat_ip_address}
+}
+
+output "vm_key_filename" {
+  value = { for k, v in local_file.private_key : yandex_compute_instance.virtual_machine[k].name => v.filename }
+}

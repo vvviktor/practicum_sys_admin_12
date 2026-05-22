@@ -32,7 +32,7 @@
 - name: Дополнить /etc/exports
   ansible.builtin.lineinfile:
     path: /etc/exports
-    line: "{{ db_backup_folder_path }} {{ hostvars['db_vm']['ansible_host'] }}(rw,sync,no_subtree_check)"
+    line: "{{ db_backup_folder_path }} {{ hostvars['db_server']['ansible_host'] }}(rw,sync,no_subtree_check)"
     state: present
 
 - name: Применить изменения /etc/exports

@@ -25,7 +25,7 @@
     users: "{{ db_user }}"
     source: "{{ hostvars[item]['ansible_host'] }}/32"
     method: scram-sha-256
-  loop: "{{ groups['mw_host'] }}"
+  loop: "{{ groups['mw'] }}"
   notify: Postgresql reloader
 
 - name: Установить hot_standby = on
@@ -53,7 +53,7 @@
   become_user: postgres
   command: >
     pg_basebackup
-    -h {{ hostvars['db_vm']['ansible_host'] }}
+    -h {{ hostvars['db_server']['ansible_host'] }}
     -D /var/lib/postgresql/14/main
     -U {{ replica_user }}
     -P

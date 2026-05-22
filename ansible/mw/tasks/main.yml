@@ -37,7 +37,7 @@
 - name: Пинг БД
   community.postgresql.postgresql_ping:
     login_db: "{{ db_name }}"
-    login_host: "{{ hostvars['db_vm']['ansible_host'] }}"
+    login_host: "{{ hostvars['db_server']['ansible_host'] }}"
     login_user: "{{ db_user }}"
     login_password: "{{ db_password }}"
   register: db_ping_result

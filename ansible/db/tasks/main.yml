@@ -43,7 +43,7 @@
     users: "{{ db_user }}"
     source: "{{ hostvars[item]['ansible_host'] }}/32"
     method: scram-sha-256
-  loop: "{{ groups['mw_host'] }}"
+  loop: "{{ groups['mw'] }}"
   notify: Postgresql reloader
 
 - name: Настроить доступ для репликации

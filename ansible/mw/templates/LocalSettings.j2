@@ -58,7 +58,7 @@ $wgEmailAuthentication = true;
 
 ## Database settings
 $wgDBtype = 'postgres';
-$wgDBserver = '{{ hostvars['db_vm']['ansible_host'] }}';
+$wgDBserver = '{{ hostvars['db_server']['ansible_host'] }}';
 $wgDBname = '{{ db_name }}';
 $wgDBuser = '{{ db_user }}';
 $wgDBpassword = '{{ db_password }}';
