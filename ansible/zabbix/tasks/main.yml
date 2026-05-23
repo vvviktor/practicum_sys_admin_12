@@ -1,0 +1,135 @@
+---
+# tasks file for zabbix
+
+- name: Выполнить apt update
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Установить начальные пакеты
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages_1 }}"
+
+- name: Создать временную папку
+  ansible.builtin.file:
+    path: /tmp
+    state: directory
+    mode: '0777'
+
+- name: Скачать установочный пакет Zabbix
+  ansible.builtin.get_url:
+    url: https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu22.04_all.deb
+    dest: /tmp/zabbix-release_6.4-1+ubuntu22.04_all.deb
+
+- name: Установить установочный пакет Zabbix
+  ansible.builtin.apt:
+    deb: /tmp/zabbix-release_6.4-1+ubuntu22.04_all.deb
+    state: present
+
+- name: Выполнить apt update
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Установить остальные пакеты
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages_2 }}"
+
+- name: Создать БД Zabbix
+  ansible.mysql.mysql_db:
+    name: "{{ zabbix_db_name }}"
+    encoding: utf8mb4
+    collation: utf8mb4_bin
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Создать пользователя Zabbix
+  ansible.mysql.mysql_user:
+    name: "{{ zabbix_db_user }}"
+    password: "{{ zabbix_db_password }}"
+    priv: "{{ zabbix_db_name }}.*:ALL"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Изменить log_bin_trust_function_creators
+  ansible.mysql.mysql_variables:
+    variable: log_bin_trust_function_creators
+    value: '1'
+    mode: global
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Распаковать БД через zcat
+  ansible.builtin.shell: |
+    zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz > /tmp/server.sql
+  args:
+    creates: /tmp/server.sql
+  tags:
+    - zabbix_import
+
+- name: Проверить, существует ли таблица role
+  ansible.mysql.mysql_query:
+    login_db: "{{ zabbix_db_name }}"
+    login_user: "{{ zabbix_db_user }}"
+    login_password: "{{ zabbix_db_password }}"
+    query: "SHOW TABLES LIKE 'role'"    
+  register: table_check
+  tags:
+    - zabbix_import
+
+- name: Импортировать БД
+  ansible.mysql.mysql_db:
+    name: "{{ zabbix_db_name }}"
+    state: import
+    target: /tmp/server.sql
+    login_user: "{{ zabbix_db_user }}"
+    login_password: "{{ zabbix_db_password }}"
+  when: table_check.rowcount == 0
+  tags:
+    - zabbix_import 
+
+- name: Изменить log_bin_trust_function_creators
+  ansible.mysql.mysql_variables:
+    variable: log_bin_trust_function_creators
+    value: '0'
+    mode: global
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Изменить /etc/zabbix/zabbix_server.conf
+  ansible.builtin.lineinfile:
+    path: /etc/zabbix/zabbix_server.conf
+    regexp: '^# DBPassword='
+    line: "DBPassword={{ zabbix_db_password }}"
+  notify:
+    - Restart zabbix-server
+    - Restart zabbix-agent
+
+- name: Изменить /etc/zabbix/nginx.conf
+  ansible.builtin.lineinfile:
+    path: /etc/zabbix/nginx.conf
+    regexp: '^#\s*listen\s*8080;'
+    line: 'listen 8080;'
+  notify:
+    - Restart nginx
+    - Restart php8.1-fpm
+
+- name: Изменить /etc/zabbix/nginx.conf
+  ansible.builtin.lineinfile:
+    path: /etc/zabbix/nginx.conf
+    regexp: '^#\s*server_name\s*example.com;'
+    line: "server_name {{ ansible_host }};"
+  notify:
+    - Restart nginx
+    - Restart php8.1-fpm
+
+- name: Изменить /etc/nginx/sites-enabled/default
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/sites-enabled/default
+    regexp: 'root /var/www/html'
+    line: 'root /usr/share/zabbix;'
+  notify:
+    - Restart nginx
+    - Restart php8.1-fpm
+
+

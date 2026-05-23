@@ -48,3 +48,11 @@
   tags:
     - nginxproxy
 
+- name: Настройка мониторинга Zabbix
+  become: true
+  hosts: zabbix
+  roles:
+    - zabbix
+  tags:
+    - zabbix
+
