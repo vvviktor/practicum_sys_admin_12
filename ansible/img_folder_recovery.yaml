@@ -31,7 +31,7 @@
         dest: "{{ image_folder_path }}"
 
 - name: Восстановить монтирование на всех клиентах
-  hosts: mw_host
+  hosts: mw
   become: true
   tasks:
     - name: Отмонтировать stale NFS share

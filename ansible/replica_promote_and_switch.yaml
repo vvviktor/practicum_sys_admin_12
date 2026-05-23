@@ -1,7 +1,7 @@
 ---
 
 - name: Перевести реплику БД в режим primary
-  hosts: db-replica
+  hosts: dbreplica
   tasks:
     - name: Выполнить команду pg_promote
       become: true
