@@ -1,1 +1,2 @@
-<img width="736" height="937" alt="Схема_инфраструктуры" src="https://github.com/user-attachments/assets/2e5a02af-66c7-4d84-8600-228d9060a92b" />
+<img width="718" height="933" alt="Схема_проекта_2" src="https://github.com/user-attachments/assets/00ccc3f3-b432-4f9e-aa4c-4e7ba7a629cc" />
+
