@@ -73,7 +73,7 @@
     zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz > /tmp/server.sql
   args:
     creates: /tmp/server.sql
-  when: zabbix_db_info.databases[zabbix_db_name].tables == 0
+  when: zabbix_db_info.databases.get(zabbix_db_name) is none
   tags:
     - zabbix_import
 
@@ -84,7 +84,7 @@
     target: /tmp/server.sql
     login_user: "{{ zabbix_db_user }}"
     login_password: "{{ zabbix_db_password }}"
-  when: zabbix_db_info.databases[zabbix_db_name].tables == 0
+  when: zabbix_db_info.databases.get(zabbix_db_name) is none
   tags:
     - zabbix_import
   notify: 
