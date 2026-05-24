@@ -68,16 +68,6 @@
   tags:
     - zabbix_import
 
-- name: Проверить, существует ли таблица role
-  ansible.mysql.mysql_query:
-    login_db: "{{ zabbix_db_name }}"
-    login_user: "{{ zabbix_db_user }}"
-    login_password: "{{ zabbix_db_password }}"
-    query: "SHOW TABLES LIKE 'role'"    
-  register: table_check
-  tags:
-    - zabbix_import
-
 - name: Импортировать БД
   ansible.mysql.mysql_db:
     name: "{{ zabbix_db_name }}"
@@ -85,9 +75,13 @@
     target: /tmp/server.sql
     login_user: "{{ zabbix_db_user }}"
     login_password: "{{ zabbix_db_password }}"
-  when: table_check.rowcount == 0
   tags:
-    - zabbix_import 
+    - zabbix_import
+  notify: 
+    - Restart zabbix-server
+    - Restart zabbix-agent
+    - Restart nginx
+    - Restart php8.1-fpm
 
 - name: Изменить log_bin_trust_function_creators
   ansible.mysql.mysql_variables:

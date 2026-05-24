@@ -1,6 +1,10 @@
 ---
 # tasks file for nginxproxy
 
+- name: Выполнить apt update
+  ansible.builtin.apt:
+    update_cache: true
+
 - name: Установить пакеты
   ansible.builtin.apt:
     name: "{{ item }}"

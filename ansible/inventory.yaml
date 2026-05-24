@@ -3,40 +3,40 @@ mw_project:
     nginxproxy:
       hosts:
         nginxproxy_server:
-          ansible_host: 93.77.185.198
+          ansible_host: 111.88.253.182
           ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_nginxproxy_server
     mw:
       hosts:
         mw_server_1:
-          ansible_host: 51.250.11.246
+          ansible_host: 111.88.247.111
           ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_mw_server_1
         mw_server_2:
-          ansible_host: 89.169.137.55
+          ansible_host: 111.88.253.224
           ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_mw_server_2
     db:
       hosts:
         db_server:
-          ansible_host: 93.77.177.116
+          ansible_host: 111.88.254.0
           ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_db_image_server
     dbreplica:
       hosts:
         dbreplica_server:
-          ansible_host: 93.77.183.22
+          ansible_host: 111.88.251.59
           ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_dbreplica_server
     image:
       hosts:
         image_server:
-          ansible_host: 93.77.177.116
+          ansible_host: 111.88.254.0
           ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_db_image_server
     backup:
       hosts:
         backup_server:
-          ansible_host: 46.21.244.82
+          ansible_host: 51.250.7.42
           ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_backup_zabbix_server
     zabbix:
       hosts:
         zabbix_server:
-          ansible_host: 46.21.244.82
+          ansible_host: 51.250.7.42
           ansible_ssh_private_key_file: /home/s14347219/practicum_12/ansible/ssh_keys/ssh_key_backup_zabbix_server
   vars:
     connection_protocol: ssh
