@@ -1,0 +1,13 @@
+server {
+    listen 127.0.0.1:80;
+    server_name 127.0.0.1;
+
+    location = /basic_status {
+        stub_status;
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+    }
+}
+
+

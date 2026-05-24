@@ -13,4 +13,5 @@ packages:
   - php-pgsql
   - python3-psycopg2
   - nfs-common
+  - zabbix-agent
 

@@ -22,6 +22,11 @@
     src: nginx_default.j2
     dest: /etc/nginx/sites-enabled/default
 
+- name: Создать /etc/nginx/conf.d/stub_status.conf для zabbix-agent
+  ansible.builtin.template:
+    src: templates/stub_status.conf.j2
+    dest: /etc/nginx/conf.d/stub_status.conf
+
 - name: Перезапустить php8.1-fpm
   ansible.builtin.service:
     name: php8.1-fpm
@@ -92,4 +97,14 @@
     group: www-data
     mode: '0600'
 
+- name: Обновить конфигурацию zabbix_agentd.conf
+  ansible.builtin.template:
+    src: templates/zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+
+- name: Перезапустить zabbix-agent
+  ansible.builtin.service:
+    name: zabbix-agent
+    state: restarted
+    enabled: true
 
