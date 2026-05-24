@@ -60,11 +60,20 @@
     mode: global
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
-- name: Распаковать БД через zcat
+- name: Проверить, пуста ли БД Zabbix
+  ansible.mysql.mysql_info:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_db: "{{ zabbix_db_name }}"
+  register: zabbix_db_info
+  tags:
+    - zabbix_import
+
+- name: Распаковать БД через zcat (только если БД пуста)
   ansible.builtin.shell: |
     zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz > /tmp/server.sql
   args:
     creates: /tmp/server.sql
+  when: zabbix_db_info.databases[zabbix_db_name].tables == 0
   tags:
     - zabbix_import
 
@@ -75,6 +84,7 @@
     target: /tmp/server.sql
     login_user: "{{ zabbix_db_user }}"
     login_password: "{{ zabbix_db_password }}"
+  when: zabbix_db_info.databases[zabbix_db_name].tables == 0
   tags:
     - zabbix_import
   notify: 
@@ -89,6 +99,8 @@
     value: '0'
     mode: global
     login_unix_socket: /var/run/mysqld/mysqld.sock
+  tags:
+    - zabbix_import
 
 - name: Изменить /etc/zabbix/zabbix_server.conf
   ansible.builtin.lineinfile:
